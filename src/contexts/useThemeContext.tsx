@@ -1,6 +1,6 @@
 // src/hooks/useThemeContext.ts
 import { useContext } from "react";
-import { ThemeContext, ThemeContextProps } from "../contexts/ThemeContext";
+import { ThemeContext, ThemeContextProps } from "./ThemeContext";
 
 //如果 useContext(ThemeContext) 返回 undefined，這通常意味著 useTheme 被用在沒有 ThemeProviderComponent 的組件中。
 const useThemeContext = (): ThemeContextProps => {

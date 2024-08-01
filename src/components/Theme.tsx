@@ -16,7 +16,7 @@ const lightPalette: CustomPaletteOptions = {
     main: "#dc004e",
   },
   background: {
-    default: "#ffffff",
+    default: "#00FFC8",
     paper: "#f5f5f5",
   },
   text: {
