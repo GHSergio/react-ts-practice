@@ -1,9 +1,13 @@
+//APP.tsx
+import ThemeProviderComponent from "./contexts/ThemeContext";
+import Main from "./Main";
 import "./styles/index.scss";
+
 function App() {
   return (
-    <>
-      <div className="title">This is a React + TypeScript practice</div>
-    </>
+    <ThemeProviderComponent>
+      <Main />
+    </ThemeProviderComponent>
   );
 }
 
