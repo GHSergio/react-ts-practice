@@ -3,11 +3,13 @@ import { Grid, TextField, IconButton, Button } from "@mui/material";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useViewMode } from "../contexts/useViewMode";
 
 const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const isMobile = useMediaQuery("(max-width:720px)");
+  //從ViewMode Context 提取 setViewMode
+  const { viewMode, setViewMode } = useViewMode();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -26,6 +28,7 @@ const SearchBar: React.FC = () => {
         spacing={1}
         alignItems="center"
         xs={isMobile ? 12 : true}
+        marginX={"10px"}
       >
         {/* 搜尋框 */}
         <Grid
@@ -69,13 +72,13 @@ const SearchBar: React.FC = () => {
         style={{ textAlign: isMobile ? "center" : "right", flexShrink: 1 }}
       >
         <IconButton
-          onClick={() => setViewMode("card")}
+          onClick={() => setViewMode?.("card")}
           color={viewMode === "card" ? "primary" : "default"}
         >
           <ViewModuleIcon />
         </IconButton>
         <IconButton
-          onClick={() => setViewMode("list")}
+          onClick={() => setViewMode?.("list")}
           color={viewMode === "list" ? "primary" : "default"}
         >
           <ViewListIcon />

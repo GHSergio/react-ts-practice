@@ -19,7 +19,7 @@ export const ThemeContext = createContext<ThemeContextProps | undefined>(
 );
 
 //意味著 ThemeProviderComponent 是一個函數型組件，它的 props 包含 children，children 是 ReactNode 類型，代表了組件的子元素。
-const ThemeProviderComponent: React.FC<{ children: ReactNode }> = ({
+export const ThemeProviderComponent: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [mode, setMode] = useState<ThemeMode>("light");
@@ -45,5 +45,3 @@ const ThemeProviderComponent: React.FC<{ children: ReactNode }> = ({
     </ThemeContext.Provider>
   );
 };
-
-export default ThemeProviderComponent;

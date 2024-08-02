@@ -8,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MovieIcon from "@mui/icons-material/Movie";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import useThemeContext from "../contexts/useThemeContext";
+import { useThemeContext } from "../contexts/useThemeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
