@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { Grid, TextField, IconButton, Button } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  IconButton,
+  Button,
+  useMediaQuery,
+} from "@mui/material";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useViewMode } from "../contexts/useViewMode";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+import { useMovie } from "../contexts/useMovie";
 
 const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const isMobile = useMediaQuery("(max-width:720px)");
-  //從ViewMode Context 提取 setViewMode
-  const { viewMode, setViewMode } = useViewMode();
+  //從Movie Context 提取 setViewMode
+  const { viewMode, setViewMode } = useMovie();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

@@ -1,17 +1,22 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
-import MovieIcon from "@mui/icons-material/Movie";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button,
+  useMediaQuery,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Movie as MovieIcon,
+  Brightness7 as Brightness7Icon,
+  Brightness4 as Brightness4Icon,
+} from "@mui/icons-material";
 import { useThemeContext } from "../contexts/useThemeContext";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { useMovie } from "../contexts/useMovie";
 
 const Navbar: React.FC = () => {
   // 使用自定義的主題上下文，獲取當前模式和切換主題的函數
@@ -20,6 +25,8 @@ const Navbar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width:720px)");
   // 用於控制菜單打開的狀態
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const { setCurrentPage } = useMovie();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -84,8 +91,12 @@ const Navbar: React.FC = () => {
               MovieListApp
             </Typography>
             {/* 默認狀態下的導航按鈕 */}
-            <Button sx={{ color: "inherit" }}>MovieList</Button>
-            <Button sx={{ color: "inherit" }}>Favorite</Button>
+            <Button color="inherit" onClick={() => setCurrentPage("menu")}>
+              Movie List
+            </Button>
+            <Button color="inherit" onClick={() => setCurrentPage("favorite")}>
+              Favorite List
+            </Button>
           </>
         )}
         {/* 切換主題模式的按鈕 */}

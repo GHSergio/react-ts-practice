@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PosterCard from "../components/PosterCard";
 import PosterList from "../components/PosterList";
-import { useViewMode } from "../contexts/useViewMode";
+import { useMovie } from "../contexts/useMovie";
 import { Box } from "@mui/material";
 import axios from "axios";
 
@@ -17,7 +17,7 @@ interface Movie {
 }
 
 const MovieList: React.FC = () => {
-  const { viewMode } = useViewMode();
+  const { viewMode } = useMovie();
   const [movies, setMovies] = useState<Movie[]>([]);
 
   // 初始獲取Poster data

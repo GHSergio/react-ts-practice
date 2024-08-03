@@ -1,12 +1,16 @@
 //Main.tsx
 import React from "react";
+import { Grid, Box } from "@mui/material";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
-import { Grid, Box } from "@mui/material";
 import MovieList from "./components/MovieList";
+import FavoriteList from "./components/MovieList";
+import { useMovie } from "./contexts/useMovie";
 // import "./styles/index.scss";
 
 const Main: React.FC = () => {
+  const { currentPage } = useMovie();
+  console.log(currentPage);
   return (
     <>
       <Grid container spacing={3} sx={{ padding: 0 }}>
@@ -21,7 +25,7 @@ const Main: React.FC = () => {
         {/* MovieList */}
         <Grid item xs={12}>
           <Box sx={{ width: "95%", margin: "0 auto" }}>
-            <MovieList />
+            {currentPage === "menu" ? <MovieList /> : <FavoriteList />}
           </Box>
         </Grid>
       </Grid>

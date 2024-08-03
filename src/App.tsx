@@ -1,15 +1,15 @@
 //APP.tsx
 import { ThemeProviderComponent } from "./contexts/ThemeContext";
-import { ViewModeProvider } from "./contexts/ViewModeContext";
+import { MovieProvider } from "./contexts/MovieContext";
 import Main from "./Main";
 import "./styles/index.scss";
 
 function App() {
   return (
     <ThemeProviderComponent>
-      <ViewModeProvider>
+      <MovieProvider>
         <Main />
-      </ViewModeProvider>
+      </MovieProvider>
     </ThemeProviderComponent>
   );
 }
