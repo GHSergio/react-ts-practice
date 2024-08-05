@@ -1,12 +1,34 @@
+// Theme.ts
 import { createTheme, PaletteOptions } from "@mui/material/styles";
-// 匯入 PaletteMode 介面
 import { PaletteMode } from "@mui/material";
+
+// 擴展 PaletteOptions 接口以包括custom属性
+declare module "@mui/material/styles" {
+  interface Palette {
+    custom: {
+      button: string;
+      buttonHover: string;
+      cardBackground: string;
+      inputBackground: string;
+      inputTextColor: string;
+    };
+  }
+  interface PaletteOptions {
+    custom?: {
+      button?: string;
+      buttonHover?: string;
+      cardBackground?: string;
+      inputBackground?: string;
+      inputTextColor?: string;
+    };
+  }
+}
 
 // CustomPaletteOptions 擴展 PaletteOptions
 interface CustomPaletteOptions extends PaletteOptions {
   mode: PaletteMode;
 }
-// 定義並實現介面 CustomPaletteOptions 的屬性
+
 const lightPalette: CustomPaletteOptions = {
   mode: "light",
   primary: {
@@ -21,6 +43,13 @@ const lightPalette: CustomPaletteOptions = {
   },
   text: {
     primary: "#000000",
+  },
+  custom: {
+    inputBackground: "#CCFFF2",
+    inputTextColor: "#CCFFF2",
+    button: "#00FF95",
+    buttonHover: "#00cc76",
+    cardBackground: "#00EAFF",
   },
 };
 
@@ -37,14 +66,33 @@ const darkPalette: CustomPaletteOptions = {
     paper: "#424242",
   },
   text: {
-    primary: "#ffffff",
+    primary: "#32FFFF",
+  },
+  custom: {
+    inputBackground: "#CCFFF2",
+    inputTextColor: "#000000",
+    button: "#00FF95",
+    buttonHover: "#00cc76",
+    cardBackground: "#009898",
+  },
+};
+
+const breakpoints = {
+  values: {
+    xs: 0,
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920,
   },
 };
 
 export const lightTheme = createTheme({
   palette: lightPalette,
+  breakpoints: breakpoints,
 });
 
 export const darkTheme = createTheme({
   palette: darkPalette,
+  breakpoints: breakpoints,
 });

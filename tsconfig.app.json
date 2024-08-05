@@ -10,11 +10,12 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    // 允許導入模塊時包含TypeScript文件的擴展名（例如 .ts 或 .tsx）
+    // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    // "noEmit": true,
+    "noEmit": true,
     "jsx": "react-jsx",
 
     /* Linting */

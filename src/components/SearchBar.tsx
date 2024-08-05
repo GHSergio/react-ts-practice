@@ -5,6 +5,7 @@ import {
   IconButton,
   Button,
   useMediaQuery,
+  // useTheme,
 } from "@mui/material";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -16,7 +17,7 @@ const SearchBar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width:720px)");
   //從Movie Context 提取 setViewMode
   const { viewMode, setViewMode } = useMovie();
-
+  // const theme = useTheme();
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };

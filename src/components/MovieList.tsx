@@ -1,49 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PosterCard from "../components/PosterCard";
 import PosterList from "../components/PosterList";
 import { useMovie } from "../contexts/useMovie";
-import { Box } from "@mui/material";
-import axios from "axios";
-
-// API URL
-const BASE_URL = `https://webdev.alphacamp.io`;
-const INDEX_URL = BASE_URL + `/api/movies/`;
-const POSTER_URL = BASE_URL + `/posters/`;
-
-interface Movie {
-  id: number;
-  title: string;
-  image: string;
-}
+import { Box, useMediaQuery } from "@mui/material";
 
 const MovieList: React.FC = () => {
-  const { viewMode } = useMovie();
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const { viewMode, movies, POSTER_URL, handleMoreClick, addToFavorite } =
+    useMovie();
 
-  // 初始獲取Poster data
-  useEffect(() => {
-    console.log("Fetching movies from API:", INDEX_URL); // 打印API URL
-    axios
-      .get(INDEX_URL)
-      .then((response) => {
-        console.log("API response:", response); // 打印API響應
-        if (response.data && response.data.results) {
-          setMovies(response.data.results);
-        } else {
-          console.error("Invalid API response structure:", response.data); // 打印無效響應結構
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching the movies:", error); // 打印錯誤
-      });
-  }, []);
+  // 使用 useMediaQuery 來設置不同斷點的樣式
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const isMediumScreen = useMediaQuery("(max-width:960px)");
+  const isLargeScreen = useMediaQuery("(max-width:1200px)");
 
-  const handleMoreClick = (movie: Movie) => {
-    console.log(`More details for ${movie.title}`);
-  };
-
-  const handleFavoriteClick = (movie: Movie) => {
-    console.log(`${movie.title} added to favorites`);
+  const getGridTemplateColumns = () => {
+    if (isSmallScreen) {
+      return "repeat(auto-fit, minmax(300px, 1fr))";
+    }
+    if (isMediumScreen) {
+      return "repeat(auto-fit, minmax(500px, 1fr))";
+    }
+    if (isLargeScreen) {
+      return "repeat(auto-fit, minmax(600px, 1fr))";
+    }
+    return "repeat(auto-fit, minmax(600px, 1fr))";
   };
 
   return (
@@ -59,15 +39,33 @@ const MovieList: React.FC = () => {
           {movies.map((movie) => (
             <PosterCard
               key={movie.id}
+              id={movie.id}
               poster={POSTER_URL + movie.image}
               title={movie.title}
-              onMoreClick={() => handleMoreClick(movie)}
-              onFavoriteClick={() => handleFavoriteClick(movie)}
+              onMoreClick={() => handleMoreClick?.(movie.id)}
+              onFavoriteClick={() => addToFavorite?.(movie.id)}
             />
           ))}
         </Box>
       ) : (
-        <PosterList /> // 如果視圖模式是列表，則顯示列表組件
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: getGridTemplateColumns(),
+            gap: 2,
+          }}
+        >
+          {movies.map((movie) => (
+            <PosterList
+              key={movie.id}
+              id={movie.id}
+              poster={POSTER_URL + movie.image}
+              title={movie.title}
+              onMoreClick={() => handleMoreClick?.(movie.id)}
+              onFavoriteClick={() => addToFavorite?.(movie.id)}
+            />
+          ))}
+        </Box>
       )}
     </div>
   );

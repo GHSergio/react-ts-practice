@@ -1,15 +1,20 @@
 import React from "react";
-import Card from "@mui/material/Card"; // 卡片容器
-import CardContent from "@mui/material/CardContent"; // 卡片內容容器
-import CardMedia from "@mui/material/CardMedia"; // 用於顯示媒體（如圖像）
-import Typography from "@mui/material/Typography"; // 用於顯示文字
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  IconButton,
+  Divider,
+  Tooltip,
+  useTheme,
+} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip"; // 導入 Tooltip 組件
+import { useMovie } from "../contexts/useMovie";
 
 interface PosterCardProps {
+  id: number;
   poster: string;
   title: string;
   onMoreClick: () => void;
@@ -17,11 +22,21 @@ interface PosterCardProps {
 }
 
 const PosterCard: React.FC<PosterCardProps> = ({
+  id,
   poster,
   title,
   onMoreClick,
   onFavoriteClick,
 }) => {
+  const { favoriteList } = useMovie();
+  const theme = useTheme();
+
+  // 是否在收藏內
+  const isFavorite = (id: number) => {
+    return favoriteList.some((favorite) => favorite.id === id);
+  };
+
+  // 根據 viewMode 渲染不同的樣式
   return (
     <Card
       sx={{
@@ -30,7 +45,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        backgroundColor: "#00EAFF",
+        backgroundColor: theme.palette.custom.cardBackground,
         boxShadow: "0 0 5px 3px rgba(0,0,0,0.3)",
       }}
     >
@@ -77,6 +92,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
         <Button
           variant="outlined"
           onClick={onMoreClick}
+          color="info"
           sx={{
             backgroundColor: "#00FF95",
             fontSize: "1rem",
@@ -90,7 +106,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
           More
         </Button>
         <IconButton aria-label="add to favorites" onClick={onFavoriteClick}>
-          <FavoriteIcon />
+          <FavoriteIcon style={{ color: isFavorite(id) ? "red" : "inherit" }} />
         </IconButton>
       </CardContent>
     </Card>
