@@ -12,9 +12,17 @@ const Main: React.FC = () => {
   const { currentPage } = useMovie();
   return (
     <>
-      <Grid container spacing={3} sx={{ padding: 0 }}>
+      <Grid container sx={{ paddingBottom: "15px" }}>
         {/* Navbar */}
-        <Grid item xs={12} sx={{ padding: 0 }}>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+          }}
+        >
           <Navbar />
         </Grid>
         {/* SearchBar */}

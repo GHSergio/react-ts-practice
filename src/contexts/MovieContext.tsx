@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import axios from "axios";
+import { useTheme, useMediaQuery } from "@mui/material";
 
+// 規範 值
 type ViewMode = "card" | "list";
 type CurrentPage = "menu" | "favorite";
 
-//定義 Movie 屬性型別
+// 定義 Movie 屬性型別
 interface Movie {
   id: number;
   title: string;
@@ -30,6 +32,11 @@ export interface MovieContextProps {
   selectedMovie: Movie | null;
   setSelectedMovie: (movie: Movie | null) => void;
   handleCloseModal: () => void;
+  paginationPage: number;
+  setPaginationPage: (page: number) => void;
+  moviesPerPage: number;
+  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  paginatedMovies: Movie[];
 }
 
 const BASE_URL = `https://webdev.alphacamp.io`;
@@ -51,6 +58,40 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   const [favoriteList, setFavoriteList] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [paginationPage, setPaginationPage] = useState(1);
+
+  //定義 breakpoint
+  const theme = useTheme();
+
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isExtraLargeScreen = useMediaQuery(theme.breakpoints.down("xl"));
+
+  //每頁顯示movie筆數
+  let moviesPerPage;
+  if (isSmallScreen) {
+    moviesPerPage = 4;
+  } else if (isMediumScreen) {
+    moviesPerPage = 8;
+  } else if (isLargeScreen) {
+    moviesPerPage = 12;
+  } else if (isExtraLargeScreen) {
+    moviesPerPage = 16;
+  } else {
+    moviesPerPage = 21;
+  }
+
+  const startIndex = (paginationPage - 1) * moviesPerPage;
+  const paginatedMovies = movies.slice(startIndex, startIndex + moviesPerPage);
+
+  //處理換頁
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPaginationPage(value);
+  };
 
   //顯示 Movie detail
   const handleMoreClick = (movieId: number) => {
@@ -115,6 +156,11 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         handleCloseModal,
         selectedMovie,
         setSelectedMovie,
+        paginationPage,
+        setPaginationPage,
+        handlePageChange,
+        moviesPerPage,
+        paginatedMovies,
       }}
     >
       {children}

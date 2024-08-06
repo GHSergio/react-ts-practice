@@ -1,9 +1,7 @@
-// PosterList.tsx
 import React from "react";
 import {
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
   Avatar,
   Button,
@@ -13,6 +11,7 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useMovie } from "../contexts/useMovie";
@@ -39,7 +38,7 @@ const PosterList: React.FC<PosterListProps> = ({
     return favoriteList.some((favorite) => favorite.id === id);
   };
 
-  //小螢幕時
+  // 小螢幕時
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
@@ -48,77 +47,110 @@ const PosterList: React.FC<PosterListProps> = ({
         boxShadow: theme.palette.custom.boxShadow,
         backgroundColor: theme.palette.custom.cardBackground,
         borderRadius: "5px",
+        height: "100px",
       }}
     >
       <ListItem
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
+          height: "100%",
+          padding: 1,
         }}
       >
-        <ListItemAvatar>
-          <Avatar
-            src={poster}
-            alt={title}
-            variant="square"
-            sx={{ width: 100, height: 150 }}
-          />
-        </ListItemAvatar>
-        <Tooltip title={title} arrow>
-          <ListItemText
-            primary={
-              <Typography
-                noWrap
-                sx={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: 500, // 設置最大寬度
-                }}
-              >
-                {title}
-              </Typography>
-            }
-            sx={{ marginLeft: 2 }}
-          />
-        </Tooltip>
-        {/* Divider改為垂直 */}
-        <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-
-        <div>
-          <Button
-            onClick={onMoreClick}
-            sx={{
-              marginRight: 0.5,
-              color: theme.palette.custom.buttonTextColor,
-              backgroundColor: theme.palette.custom.buttonBackgroundColor,
-              fontSize: isSmallScreen ? "0.5rem" : "1rem",
-              minWidth: isSmallScreen ? "auto" : "64px",
-              fontWeight: "bold",
-              // boxShadow: theme.palette.custom.boxShadow,
-              "&:hover": {
-                backgroundColor: theme.palette.custom.buttonHover,
-              },
-            }}
-          >
-            More
-          </Button>
-          <IconButton
-            aria-label="add to favorites"
-            onClick={onFavoriteClick}
-            sx={{
-              color: isFavorite(id) ? "red" : "inherit",
-            }}
-          >
-            <FavoriteIcon
+        {/* image */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <ListItemAvatar>
+            <Avatar
+              src={poster}
+              alt={title}
+              variant="square"
               sx={{
-                transform: isSmallScreen ? "scale(0.75)" : "scale(1)",
-                color: isFavorite(id) ? "red" : "inherit",
+                width: "60px",
+                height: "80px",
+                objectFit: "contain",
+                borderRadius: "5px",
               }}
             />
-          </IconButton>
-        </div>
+          </ListItemAvatar>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 0 }} />
+        {/* 右半區 */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isSmallScreen ? "column" : "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: isSmallScreen ? "75%" : "100%",
+            padding: isSmallScreen ? "0px 0px" : "0 20px",
+            marginLeft: 1,
+          }}
+        >
+          <Tooltip title={title} arrow>
+            <Typography
+              noWrap
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                // maxWidth: "90%",
+                width: "70%",
+                marginBottom: isSmallScreen ? 1 : 0,
+              }}
+            >
+              {title}
+            </Typography>
+          </Tooltip>
+
+          {/* More & Icon */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              onClick={onMoreClick}
+              sx={{
+                marginRight: isSmallScreen ? 0 : 1,
+                color: theme.palette.custom.buttonTextColor,
+                backgroundColor: theme.palette.custom.buttonBackgroundColor,
+                fontSize: isSmallScreen ? "0.5rem" : "1rem",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: theme.palette.custom.buttonHover,
+                },
+                width: "70px",
+                height: "30px",
+                marginLeft: 1,
+              }}
+            >
+              More
+            </Button>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={onFavoriteClick}
+              sx={{
+                color: isFavorite(id) ? "red" : "inherit",
+              }}
+            >
+              <FavoriteIcon
+                sx={{
+                  transform: isSmallScreen ? "scale(0.8)" : "scale(1)",
+                }}
+              />
+            </IconButton>
+          </Box>
+        </Box>
       </ListItem>
     </List>
   );

@@ -2,9 +2,8 @@ import React from "react";
 import PosterCard from "../components/PosterCard";
 import PosterList from "../components/PosterList";
 import { useMovie } from "../contexts/useMovie";
-import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Box, useTheme, useMediaQuery, Pagination } from "@mui/material";
 import MovieModal from "./MovieModal";
-
 const MovieList: React.FC = () => {
   const {
     viewMode,
@@ -15,13 +14,17 @@ const MovieList: React.FC = () => {
     modalOpen,
     handleCloseModal,
     selectedMovie,
+    paginationPage,
+    handlePageChange,
+    paginatedMovies,
+    moviesPerPage,
   } = useMovie();
   const theme = useTheme();
 
   // 使用 useMediaQuery 來設置不同斷點的樣式
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const isLargeScreen = useMediaQuery(theme.breakpoints.down("xl"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("xl"));
 
   // 設置不同 breakPoint 排版
   const getGridTemplateColumns = () => {
@@ -47,7 +50,7 @@ const MovieList: React.FC = () => {
             gap: 2,
           }}
         >
-          {movies.map((movie) => (
+          {paginatedMovies.map((movie) => (
             <PosterCard
               key={movie.id}
               id={movie.id}
@@ -66,7 +69,7 @@ const MovieList: React.FC = () => {
             gap: 2,
           }}
         >
-          {movies.map((movie) => (
+          {paginatedMovies.map((movie) => (
             <PosterList
               key={movie.id}
               id={movie.id}
@@ -78,6 +81,14 @@ const MovieList: React.FC = () => {
           ))}
         </Box>
       )}
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
+        <Pagination
+          count={Math.ceil(movies.length / moviesPerPage)}
+          page={paginationPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
       {selectedMovie && (
         <MovieModal
           open={modalOpen}
