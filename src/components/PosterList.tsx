@@ -45,7 +45,7 @@ const PosterList: React.FC<PosterListProps> = ({
   return (
     <List
       sx={{
-        boxShadow: "0 0 5px 3px rgba(0,0,0,0.3)",
+        boxShadow: theme.palette.custom.boxShadow,
         backgroundColor: theme.palette.custom.cardBackground,
         borderRadius: "5px",
       }}
@@ -91,11 +91,12 @@ const PosterList: React.FC<PosterListProps> = ({
             onClick={onMoreClick}
             sx={{
               marginRight: 0.5,
-              backgroundColor: theme.palette.custom.button,
+              color: theme.palette.custom.buttonTextColor,
+              backgroundColor: theme.palette.custom.buttonBackgroundColor,
               fontSize: isSmallScreen ? "0.5rem" : "1rem",
               minWidth: isSmallScreen ? "auto" : "64px",
               fontWeight: "bold",
-              boxShadow: "0 0 2px 2px rgba(0,0,0,0.3)",
+              // boxShadow: theme.palette.custom.boxShadow,
               "&:hover": {
                 backgroundColor: theme.palette.custom.buttonHover,
               },

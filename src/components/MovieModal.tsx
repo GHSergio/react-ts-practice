@@ -78,9 +78,9 @@ const MovieModal: React.FC<MovieModalProps> = ({
               componentsProps={{
                 tooltip: {
                   sx: {
-                    fontSize: "1.2em", // 調整字體大小
-                    backgroundColor: "rgba(0, 0, 0, 0.87)", // 背景顏色
-                    color: "white", // 字體顏色
+                    fontSize: "1.2em",
+                    backgroundColor: "rgba(0, 0, 0, 0.87)",
+                    color: "white",
                   },
                 },
               }}

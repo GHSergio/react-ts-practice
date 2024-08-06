@@ -46,7 +46,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
         flexDirection: "column",
         justifyContent: "space-between",
         backgroundColor: theme.palette.custom.cardBackground,
-        boxShadow: "0 0 5px 3px rgba(0,0,0,0.3)",
+        boxShadow: theme.palette.custom.boxShadow,
       }}
     >
       <CardContent sx={{ paddingBottom: "16px" }}>
@@ -89,25 +89,54 @@ const PosterCard: React.FC<PosterCardProps> = ({
       </CardContent>
       <Divider />
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button
-          variant="outlined"
-          onClick={onMoreClick}
-          color="error"
-          sx={{
-            backgroundColor: "#00FF95",
-            fontSize: "1rem",
-            fontWeight: "bold",
-            boxShadow: "0 0 2px 3px rgba(0,0,0,0.3)",
-            "&:hover": {
-              backgroundColor: "#00cc76",
+        <Tooltip
+          title={"更多資訊"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
             },
           }}
         >
-          More
-        </Button>
-        <IconButton aria-label="add to favorites" onClick={onFavoriteClick}>
-          <FavoriteIcon style={{ color: isFavorite(id) ? "red" : "inherit" }} />
-        </IconButton>
+          <Button
+            variant="outlined"
+            onClick={onMoreClick}
+            // color="error"
+            sx={{
+              color: theme.palette.custom.buttonTextColor,
+              backgroundColor: theme.palette.custom.buttonBackgroundColor,
+              fontSize: "1rem",
+              fontWeight: "bold",
+              // boxShadow: theme.palette.custom.boxShadow,
+              "&:hover": {
+                backgroundColor: theme.palette.custom.buttonHover,
+              },
+            }}
+          >
+            More
+          </Button>
+        </Tooltip>
+        <Tooltip
+          title={"添加到收藏"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
+            },
+          }}
+        >
+          <IconButton aria-label="add to favorites" onClick={onFavoriteClick}>
+            <FavoriteIcon
+              style={{ color: isFavorite(id) ? "red" : "inherit" }}
+            />
+          </IconButton>
+        </Tooltip>
       </CardContent>
     </Card>
   );
