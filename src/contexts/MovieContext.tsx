@@ -36,6 +36,9 @@ export interface MovieContextProps {
   setPaginationPage: (page: number) => void;
   moviesPerPage: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  searchKeyword: string;
+  setSearchKeyword: (keyword: string) => void;
+  filteredMovies: Movie[];
   paginatedMovies: Movie[];
 }
 
@@ -43,12 +46,11 @@ const BASE_URL = `https://webdev.alphacamp.io`;
 const INDEX_URL = BASE_URL + `/api/movies/`;
 const POSTER_URL = BASE_URL + `/posters/`;
 
+//創建MovieContext
 export const MovieContext = createContext<MovieContextProps | undefined>(
   undefined
 );
 
-//React.FC<{ children: ReactNode }> 指定了 MovieProvider 是一個 React 函數元件，並且它接收一個屬性 children，其類型是 ReactNode。
-//這樣做確保了 MovieProvider 這個元件在使用時必須接收一個 children 屬性，而且這個 children 可以是任何合法的 React 元素或節點。
 export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
@@ -59,6 +61,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [paginationPage, setPaginationPage] = useState(1);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   //定義 breakpoint
   const theme = useTheme();
@@ -82,13 +85,22 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
     moviesPerPage = 21;
   }
 
+  //從movies篩選出title包含keyword的item
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+  //每頁從哪筆data開始
   const startIndex = (paginationPage - 1) * moviesPerPage;
-  const paginatedMovies = movies.slice(startIndex, startIndex + moviesPerPage);
+  //提取startIndex ~ startIndex + moviesPerPage 筆 data
+  const paginatedMovies = filteredMovies.slice(
+    startIndex,
+    startIndex + moviesPerPage
+  );
 
   //處理換頁
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
+    event: React.ChangeEvent<unknown>, // 事件對象參數
+    value: number // 新的頁碼值參數
   ) => {
     setPaginationPage(value);
   };
@@ -102,7 +114,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  //添加該Poster到FavoriteList
+  //添加該movie到FavoriteList
   const addToFavorite = (movieId: number) => {
     const selectedMovie = movies.find((movie) => movie.id === movieId);
     if (selectedMovie && !favoriteList.some((fav) => fav.id === movieId)) {
@@ -120,7 +132,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   console.log("當前海報模式 :", viewMode);
   console.log("當前收藏列表 :", favoriteList);
 
-  // 初始獲取Poster data
+  // 初始獲取movie data
   useEffect(() => {
     console.log("Fetching movies from API:", INDEX_URL); // 打印API URL
     axios
@@ -161,6 +173,9 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         handlePageChange,
         moviesPerPage,
         paginatedMovies,
+        searchKeyword,
+        setSearchKeyword,
+        filteredMovies,
       }}
     >
       {children}

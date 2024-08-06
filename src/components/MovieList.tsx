@@ -2,12 +2,18 @@ import React from "react";
 import PosterCard from "../components/PosterCard";
 import PosterList from "../components/PosterList";
 import { useMovie } from "../contexts/useMovie";
-import { Box, useTheme, useMediaQuery, Pagination } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  useMediaQuery,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import MovieModal from "./MovieModal";
 const MovieList: React.FC = () => {
   const {
     viewMode,
-    movies,
+    // movies,
     POSTER_URL,
     handleMoreClick,
     addToFavorite,
@@ -18,6 +24,7 @@ const MovieList: React.FC = () => {
     handlePageChange,
     paginatedMovies,
     moviesPerPage,
+    filteredMovies,
   } = useMovie();
   const theme = useTheme();
 
@@ -42,48 +49,56 @@ const MovieList: React.FC = () => {
 
   return (
     <div>
-      {viewMode === "card" ? (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: 2,
-          }}
-        >
-          {paginatedMovies.map((movie) => (
-            <PosterCard
-              key={movie.id}
-              id={movie.id}
-              poster={POSTER_URL + movie.image}
-              title={movie.title}
-              onMoreClick={() => handleMoreClick?.(movie.id)}
-              onFavoriteClick={() => addToFavorite?.(movie.id)}
-            />
-          ))}
+      {filteredMovies.length === 0 ? (
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
+          <Typography variant="h6">此關鍵字，查無相關搜尋結果！</Typography>
         </Box>
       ) : (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: getGridTemplateColumns(),
-            gap: 2,
-          }}
-        >
-          {paginatedMovies.map((movie) => (
-            <PosterList
-              key={movie.id}
-              id={movie.id}
-              poster={POSTER_URL + movie.image}
-              title={movie.title}
-              onMoreClick={() => handleMoreClick?.(movie.id)}
-              onFavoriteClick={() => addToFavorite?.(movie.id)}
-            />
-          ))}
-        </Box>
+        <>
+          {viewMode === "card" ? (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                gap: 2,
+              }}
+            >
+              {paginatedMovies.map((movie) => (
+                <PosterCard
+                  key={movie.id}
+                  id={movie.id}
+                  poster={POSTER_URL + movie.image}
+                  title={movie.title}
+                  onMoreClick={() => handleMoreClick?.(movie.id)}
+                  onFavoriteClick={() => addToFavorite?.(movie.id)}
+                />
+              ))}
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: getGridTemplateColumns(),
+                gap: 2,
+              }}
+            >
+              {paginatedMovies.map((movie) => (
+                <PosterList
+                  key={movie.id}
+                  id={movie.id}
+                  poster={POSTER_URL + movie.image}
+                  title={movie.title}
+                  onMoreClick={() => handleMoreClick?.(movie.id)}
+                  onFavoriteClick={() => addToFavorite?.(movie.id)}
+                />
+              ))}
+            </Box>
+          )}
+        </>
       )}
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
         <Pagination
-          count={Math.ceil(movies.length / moviesPerPage)}
+          count={Math.ceil(filteredMovies.length / moviesPerPage)}
           page={paginationPage}
           onChange={handlePageChange}
           color="primary"

@@ -1,29 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   TextField,
   IconButton,
-  Button,
+  useTheme,
   useMediaQuery,
-  // useTheme,
 } from "@mui/material";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
-// import useMediaQuery from "@mui/material/useMediaQuery";
 import { useMovie } from "../contexts/useMovie";
 
 const SearchBar: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const isMobile = useMediaQuery("(max-width:720px)");
-  //從Movie Context 提取 setViewMode
-  const { viewMode, setViewMode } = useMovie();
-  // const theme = useTheme();
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleSearch = () => {
-    console.log("Searching for:", searchTerm);
+  //從Movie Context 提取 setViewMode
+  const { viewMode, setViewMode, searchKeyword, setSearchKeyword } = useMovie();
+
+  // 將 keyword 更新到 state
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(event.target.value);
   };
 
   return (
@@ -50,7 +46,7 @@ const SearchBar: React.FC = () => {
             label="Search Movies"
             variant="outlined"
             fullWidth
-            value={searchTerm}
+            value={searchKeyword}
             onChange={handleSearchChange}
           />
         </Grid>
@@ -62,16 +58,7 @@ const SearchBar: React.FC = () => {
             flex: isMobile ? "none" : "0 0 auto",
             minWidth: isMobile ? "100%" : "70px",
           }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSearch}
-            fullWidth
-          >
-            Search
-          </Button>
-        </Grid>
+        ></Grid>
       </Grid>
       {/* 排列模式切換按鈕 */}
       <Grid
