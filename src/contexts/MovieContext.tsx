@@ -4,13 +4,13 @@ import axios from "axios";
 type ViewMode = "card" | "list";
 type CurrentPage = "menu" | "favorite";
 
-//定義 Poster 屬性型別
-interface Poster {
+//定義 Movie 屬性型別
+interface Movie {
   id: number;
   title: string;
-  description: string;
-  release_date: string;
   image: string;
+  release_date: string;
+  description: string;
 }
 
 // 定義 state 屬性型別
@@ -19,13 +19,17 @@ export interface MovieContextProps {
   setViewMode: (mode: ViewMode) => void;
   currentPage: CurrentPage;
   setCurrentPage: (page: CurrentPage) => void;
-  movies: Poster[];
-  handleMoreClick: (posterId: number) => void;
-  favoriteList: Poster[];
-  addToFavorite: (posterId: number) => void;
+  movies: Movie[];
+  handleMoreClick: (movieId: number) => void;
+  favoriteList: Movie[];
+  addToFavorite: (movieId: number) => void;
   BASE_URL: string;
   INDEX_URL: string;
   POSTER_URL: string;
+  modalOpen: boolean;
+  selectedMovie: Movie | null;
+  setSelectedMovie: (movie: Movie | null) => void;
+  handleCloseModal: () => void;
 }
 
 const BASE_URL = `https://webdev.alphacamp.io`;
@@ -43,23 +47,32 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   const [currentPage, setCurrentPage] = useState<CurrentPage>("menu");
-  const [movies, setMovies] = useState<Poster[]>([]);
-  const [favoriteList, setFavoriteList] = useState<Poster[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [favoriteList, setFavoriteList] = useState<Movie[]>([]);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  //顯示Poster detail
-  const handleMoreClick = (posterId: number) => {
-    const poster = movies.find((movie) => movie.id === posterId);
-    if (poster) {
-      console.log(`More details for ${poster.title}`);
+  //顯示 Movie detail
+  const handleMoreClick = (movieId: number) => {
+    const selectedMovie = movies.find((movie) => movie.id === movieId);
+    if (selectedMovie) {
+      setSelectedMovie(selectedMovie);
+      setModalOpen(true);
     }
   };
 
   //添加該Poster到FavoriteList
-  const addToFavorite = (posterId: number) => {
-    const poster = movies.find((movie) => movie.id === posterId);
-    if (poster && !favoriteList.some((fav) => fav.id === posterId)) {
-      setFavoriteList((prev) => [...prev, poster]);
+  const addToFavorite = (movieId: number) => {
+    const selectedMovie = movies.find((movie) => movie.id === movieId);
+    if (selectedMovie && !favoriteList.some((fav) => fav.id === movieId)) {
+      setFavoriteList((prev) => [...prev, selectedMovie]);
     }
+  };
+
+  //關閉 Modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedMovie(null);
   };
 
   console.log("當前顯示頁面 :", currentPage);
@@ -98,6 +111,10 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         POSTER_URL,
         movies,
         handleMoreClick,
+        modalOpen,
+        handleCloseModal,
+        selectedMovie,
+        setSelectedMovie,
       }}
     >
       {children}

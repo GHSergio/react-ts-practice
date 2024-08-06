@@ -2,17 +2,28 @@ import React from "react";
 import PosterCard from "../components/PosterCard";
 import PosterList from "../components/PosterList";
 import { useMovie } from "../contexts/useMovie";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
+import MovieModal from "./MovieModal";
 
 const MovieList: React.FC = () => {
-  const { viewMode, movies, POSTER_URL, handleMoreClick, addToFavorite } =
-    useMovie();
+  const {
+    viewMode,
+    movies,
+    POSTER_URL,
+    handleMoreClick,
+    addToFavorite,
+    modalOpen,
+    handleCloseModal,
+    selectedMovie,
+  } = useMovie();
+  const theme = useTheme();
 
   // 使用 useMediaQuery 來設置不同斷點的樣式
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
-  const isMediumScreen = useMediaQuery("(max-width:960px)");
-  const isLargeScreen = useMediaQuery("(max-width:1200px)");
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.down("xl"));
 
+  // 設置不同 breakPoint 排版
   const getGridTemplateColumns = () => {
     if (isSmallScreen) {
       return "repeat(auto-fit, minmax(300px, 1fr))";
@@ -66,6 +77,13 @@ const MovieList: React.FC = () => {
             />
           ))}
         </Box>
+      )}
+      {selectedMovie && (
+        <MovieModal
+          open={modalOpen}
+          handleClose={handleCloseModal}
+          movie={selectedMovie}
+        />
       )}
     </div>
   );

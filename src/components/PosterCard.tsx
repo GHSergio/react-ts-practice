@@ -66,9 +66,9 @@ const PosterCard: React.FC<PosterCardProps> = ({
           componentsProps={{
             tooltip: {
               sx: {
-                fontSize: "1.2em", // 調整字體大小
-                backgroundColor: "rgba(0, 0, 0, 0.87)", // 背景顏色
-                color: "white", // 字體顏色
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
               },
             },
           }}
@@ -78,9 +78,9 @@ const PosterCard: React.FC<PosterCardProps> = ({
             variant="h6"
             component="div"
             sx={{
+              textOverflow: "ellipsis",
               overflow: "hidden",
               whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
             }}
           >
             {title}
@@ -92,14 +92,14 @@ const PosterCard: React.FC<PosterCardProps> = ({
         <Button
           variant="outlined"
           onClick={onMoreClick}
-          color="info"
+          color="error"
           sx={{
             backgroundColor: "#00FF95",
             fontSize: "1rem",
             fontWeight: "bold",
             boxShadow: "0 0 2px 3px rgba(0,0,0,0.3)",
             "&:hover": {
-              backgroundColor: "#00cc76", // 設置 hover 顏色
+              backgroundColor: "#00cc76",
             },
           }}
         >
