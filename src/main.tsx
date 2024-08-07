@@ -6,7 +6,6 @@ import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
 import FavoriteList from "./components/FavoriteList";
 import { useMovie } from "./contexts/useMovie";
-// import "./styles/index.scss";
 
 const Main: React.FC = () => {
   const { currentPage } = useMovie();

@@ -7,9 +7,9 @@
     // "moduleResolution": "bundler",
     "moduleResolution": "node", // 修改为 'node'
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": true
     // "noEmit": true
-    "noEmit": false // 确保允许生成输出文件
+    // "noEmit": false // 确保允许生成输出文件
   },
   "include": ["vite.config.ts"]
 }

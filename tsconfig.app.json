@@ -7,7 +7,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+    "allowSyntheticDefaultImports": true,
     /* Bundler mode */
     // "moduleResolution": "bundler",
     "moduleResolution": "node", // 修改为 'node'
@@ -17,7 +17,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     // "noEmit": true,
-    "noEmit": false, // 确保允许生成输出文件
+    // "noEmit": false, // 确保允许生成输出文件
     "jsx": "react-jsx",
     /* Linting */
     "strict": true,
