@@ -91,15 +91,17 @@ const PosterList: React.FC<PosterListProps> = ({
             flexDirection: isSmallScreen ? "column" : "row",
             alignItems: "center",
             justifyContent: "space-between",
-            width: isSmallScreen ? "75%" : "100%",
-            padding: isSmallScreen ? "0px 0px" : "0 20px",
-            marginLeft: 1,
+            width: isSmallScreen ? "75%" : "90%",
+            padding: isSmallScreen ? "0px 0px" : "0px 0px",
+            marginLeft: 0.5,
           }}
         >
           <Tooltip title={title} arrow>
             <Typography
               noWrap
               sx={{
+                color: theme.palette.custom.textColor,
+                fontWeight: "bold",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",

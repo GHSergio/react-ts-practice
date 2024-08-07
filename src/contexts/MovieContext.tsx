@@ -124,7 +124,9 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
 
   //處理換頁
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>, // 事件對象參數
+    // event: React.ChangeEvent<unknown>, // 事件對象參數
+    // TS不使用就改成這樣,是故意不使用的 避免錯誤
+    _: React.ChangeEvent<unknown>, // 事件對象參數
     value: number // 新的頁碼值參數
   ) => {
     setPaginationPage(value);
