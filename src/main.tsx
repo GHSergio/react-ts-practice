@@ -4,7 +4,7 @@ import { Grid, Box } from "@mui/material";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
-import FavoriteList from "./components/MovieList";
+import FavoriteList from "./components/FavoriteList";
 import { useMovie } from "./contexts/useMovie";
 // import "./styles/index.scss";
 

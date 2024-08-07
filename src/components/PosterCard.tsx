@@ -9,8 +9,10 @@ import {
   Divider,
   Tooltip,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useMovie } from "../contexts/useMovie";
 
 interface PosterCardProps {
@@ -18,7 +20,7 @@ interface PosterCardProps {
   poster: string;
   title: string;
   onMoreClick: () => void;
-  onFavoriteClick: () => void;
+  onIconClick: () => void;
 }
 
 const PosterCard: React.FC<PosterCardProps> = ({
@@ -26,9 +28,9 @@ const PosterCard: React.FC<PosterCardProps> = ({
   poster,
   title,
   onMoreClick,
-  onFavoriteClick,
+  onIconClick,
 }) => {
-  const { favoriteList } = useMovie();
+  const { favoriteList, currentPage } = useMovie();
   const theme = useTheme();
 
   // 是否在收藏內
@@ -36,12 +38,15 @@ const PosterCard: React.FC<PosterCardProps> = ({
     return favoriteList.some((favorite) => favorite.id === id);
   };
 
+  // 小螢幕時
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   // 根據 viewMode 渲染不同的樣式
   return (
     <Card
       sx={{
-        height: 520,
-        margin: 1,
+        height: isSmallScreen ? "250px" : "520px",
+        margin: 0.5,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -49,16 +54,20 @@ const PosterCard: React.FC<PosterCardProps> = ({
         boxShadow: theme.palette.custom.boxShadow,
       }}
     >
-      <CardContent sx={{ paddingBottom: "16px" }}>
+      <CardContent
+        sx={{
+          paddingBottom: isSmallScreen ? "0px" : "16px",
+        }}
+      >
         <CardMedia
           component="img"
           image={poster}
           alt={title}
           sx={{
-            height: 350,
+            height: isSmallScreen ? "150px" : "350px",
             objectFit: "contain",
             maxHeight: "100%",
-            marginBottom: "15px",
+            marginBottom: isSmallScreen ? "0px" : "15px",
           }}
         />
         <Tooltip
@@ -78,9 +87,14 @@ const PosterCard: React.FC<PosterCardProps> = ({
             variant="h6"
             component="div"
             sx={{
+              color: theme.palette.custom.textColor,
+              fontWeight: "bold",
               textOverflow: "ellipsis",
+              textAlign: "center",
               overflow: "hidden",
               whiteSpace: "nowrap",
+              transform: isSmallScreen ? "scale(0.5)" : "scale(1)",
+              margin: 0,
             }}
           >
             {title}
@@ -88,7 +102,19 @@ const PosterCard: React.FC<PosterCardProps> = ({
         </Tooltip>
       </CardContent>
       <Divider />
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: 0,
+          paddingX: isSmallScreen ? 0 : 1,
+          paddingY: isSmallScreen ? 0 : 1,
+          marginTop: isSmallScreen ? 0 : 1,
+          marginX: isSmallScreen ? 0 : 2,
+        }}
+      >
         <Tooltip
           title={"更多資訊"}
           componentsProps={{
@@ -104,23 +130,22 @@ const PosterCard: React.FC<PosterCardProps> = ({
           <Button
             variant="outlined"
             onClick={onMoreClick}
-            // color="error"
             sx={{
               color: theme.palette.custom.buttonTextColor,
               backgroundColor: theme.palette.custom.buttonBackgroundColor,
               fontSize: "1rem",
               fontWeight: "bold",
-              // boxShadow: theme.palette.custom.boxShadow,
               "&:hover": {
                 backgroundColor: theme.palette.custom.buttonHover,
               },
+              transform: isSmallScreen ? "scale(0.5)" : "scale(1)",
             }}
           >
             More
           </Button>
         </Tooltip>
         <Tooltip
-          title={"添加到收藏"}
+          title={currentPage === "menu" ? "添加到收藏" : "從收藏移除"}
           componentsProps={{
             tooltip: {
               sx: {
@@ -131,10 +156,30 @@ const PosterCard: React.FC<PosterCardProps> = ({
             },
           }}
         >
-          <IconButton aria-label="add to favorites" onClick={onFavoriteClick}>
-            <FavoriteIcon
-              style={{ color: isFavorite(id) ? "red" : "inherit" }}
-            />
+          <IconButton
+            aria-label={
+              currentPage === "menu"
+                ? "add to favorites"
+                : "remove from favorites"
+            }
+            onClick={onIconClick}
+          >
+            {currentPage === "menu" ? (
+              <FavoriteIcon
+                style={{ color: isFavorite(id) ? "red" : "inherit" }}
+                sx={{
+                  color: theme.palette.custom.deleteIcon,
+                  transform: isSmallScreen ? "scale(0.6)" : "scale(1)",
+                }}
+              />
+            ) : (
+              <DeleteIcon
+                sx={{
+                  color: theme.palette.custom.deleteIcon,
+                  transform: isSmallScreen ? "scale(0.6)" : "scale(1)",
+                }}
+              />
+            )}
           </IconButton>
         </Tooltip>
       </CardContent>

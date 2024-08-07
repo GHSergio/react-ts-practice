@@ -5,6 +5,7 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -34,49 +35,81 @@ const SearchBar: React.FC = () => {
         marginX={"10px"}
       >
         {/* 搜尋框 */}
-        <Grid
-          item
-          xs={isMobile ? 12 : true}
-          style={{
-            flex: isMobile ? "none" : "0 0 auto",
-            minWidth: isMobile ? "100%" : "250px",
+        <Tooltip
+          title={"輸入搜尋關鍵字"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
+            },
           }}
         >
-          <TextField
-            label="Search Movies"
-            variant="outlined"
-            fullWidth
-            value={searchKeyword}
-            onChange={handleSearchChange}
-          />
-        </Grid>
-        {/* 搜尋按鈕 */}
-        <Grid
-          item
-          xs={isMobile ? 12 : true}
-          style={{
-            flex: isMobile ? "none" : "0 0 auto",
-            minWidth: isMobile ? "100%" : "70px",
-          }}
-        ></Grid>
+          <Grid
+            item
+            xs={isMobile ? 12 : true}
+            style={{
+              flex: isMobile ? "none" : "0 0 auto",
+              minWidth: isMobile ? "100%" : "250px",
+            }}
+          >
+            <TextField
+              label="Search Movies"
+              variant="outlined"
+              fullWidth
+              value={searchKeyword}
+              onChange={handleSearchChange}
+            />
+          </Grid>
+        </Tooltip>
       </Grid>
+
       {/* 排列模式切換按鈕 */}
       <Grid
         item
         style={{ textAlign: isMobile ? "center" : "right", flexShrink: 1 }}
       >
-        <IconButton
-          onClick={() => setViewMode?.("card")}
-          color={viewMode === "card" ? "primary" : "default"}
+        <Tooltip
+          title={"切換至卡片模式"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
+            },
+          }}
         >
-          <ViewModuleIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => setViewMode?.("list")}
-          color={viewMode === "list" ? "primary" : "default"}
+          <IconButton
+            onClick={() => setViewMode?.("card")}
+            color={viewMode === "card" ? "primary" : "default"}
+          >
+            <ViewModuleIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip
+          title={"切換至清單模式"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
+            },
+          }}
         >
-          <ViewListIcon />
-        </IconButton>
+          <IconButton
+            onClick={() => setViewMode?.("list")}
+            color={viewMode === "list" ? "primary" : "default"}
+          >
+            <ViewListIcon />
+          </IconButton>
+        </Tooltip>
       </Grid>
     </Grid>
   );

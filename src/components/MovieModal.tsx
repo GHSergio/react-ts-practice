@@ -42,7 +42,7 @@ const MovieModal: React.FC<MovieModalProps> = ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    // "600以下" ? 85% : "600~1280" ? 65% : 其他(1280以上) 50%
+    // "600以下"  85% : "600~1280"  65% : 其他(1280以上) 50%
     width: isSmallScreen ? "85%" : isMediumScreen ? "65%" : "50%",
     bgcolor: "background.paper",
     boxShadow: 24,
@@ -115,7 +115,10 @@ const MovieModal: React.FC<MovieModalProps> = ({
           <Box>
             <Typography
               variant="body2"
-              sx={{ fontSize: isSmallScreen ? "0.8rem" : "1rem" }}
+              sx={{
+                fontSize: isSmallScreen ? "0.8rem" : "1rem",
+                letterSpacing: "0.08rem",
+              }}
             >
               {movie.description}
             </Typography>

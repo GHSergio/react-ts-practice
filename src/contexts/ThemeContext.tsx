@@ -9,6 +9,7 @@ type ThemeMode = "light" | "dark";
 // 定義 Context 的值類型
 export interface ThemeContextProps {
   mode: ThemeMode;
+  setMode: (mode: ThemeMode) => void;
   toggleTheme: () => void;
 }
 
@@ -37,7 +38,7 @@ export const ThemeProviderComponent: React.FC<{ children: ReactNode }> = ({
 
   return (
     //提供 mode & toggleTheme
-    <ThemeContext.Provider value={{ mode, toggleTheme }}>
+    <ThemeContext.Provider value={{ mode, setMode, toggleTheme }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}

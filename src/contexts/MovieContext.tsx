@@ -25,6 +25,7 @@ export interface MovieContextProps {
   handleMoreClick: (movieId: number) => void;
   favoriteList: Movie[];
   addToFavorite: (movieId: number) => void;
+  removeFromFavorite: (movieId: number) => void;
   BASE_URL: string;
   INDEX_URL: string;
   POSTER_URL: string;
@@ -38,8 +39,18 @@ export interface MovieContextProps {
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   searchKeyword: string;
   setSearchKeyword: (keyword: string) => void;
-  filteredMovies: Movie[];
-  paginatedMovies: Movie[];
+  filterMovies: (movies: Movie[], keyword: string) => Movie[];
+  paginateMovies: (movies: Movie[], page: number, perPage: number) => Movie[];
+  alert: {
+    severity: "success" | "error" | "info" | "warning";
+    message: string;
+  } | null;
+  setAlert: (
+    alert: {
+      severity: "success" | "error" | "info" | "warning";
+      message: string;
+    } | null
+  ) => void;
 }
 
 const BASE_URL = `https://webdev.alphacamp.io`;
@@ -62,6 +73,10 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [paginationPage, setPaginationPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [alert, setAlert] = useState<{
+    severity: "success" | "error" | "info" | "warning";
+    message: string;
+  } | null>(null);
 
   //定義 breakpoint
   const theme = useTheme();
@@ -85,17 +100,27 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
     moviesPerPage = 21;
   }
 
-  //從movies篩選出title包含keyword的item
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
-  //每頁從哪筆data開始
-  const startIndex = (paginationPage - 1) * moviesPerPage;
-  //提取startIndex ~ startIndex + moviesPerPage 筆 data
-  const paginatedMovies = filteredMovies.slice(
-    startIndex,
-    startIndex + moviesPerPage
-  );
+  //從傳入的movies篩選出title包含keyword的item
+  const filterMovies = (movies: Movie[], keyword: string): Movie[] => {
+    if (!keyword) {
+      return movies;
+    }
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+  };
+
+  //將傳入的movies分頁
+  const paginateMovies = (
+    movies: Movie[],
+    page: number,
+    perPage: number
+  ): Movie[] => {
+    //每頁從哪筆data開始
+    const startIndex = (page - 1) * perPage;
+    //回傳startIndex ~ startIndex + moviesPerPage 筆 data
+    return movies.slice(startIndex, startIndex + perPage);
+  };
 
   //處理換頁
   const handlePageChange = (
@@ -119,7 +144,16 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
     const selectedMovie = movies.find((movie) => movie.id === movieId);
     if (selectedMovie && !favoriteList.some((fav) => fav.id === movieId)) {
       setFavoriteList((prev) => [...prev, selectedMovie]);
+      setAlert({ severity: "success", message: "已添加到收藏清單！" });
+    } else {
+      setAlert({ severity: "warning", message: "該電影已在收藏清單內！" });
     }
+  };
+
+  //移除該movie從FavoriteList
+  const removeFromFavorite = (movieId: number) => {
+    setFavoriteList((prev) => prev.filter((movie) => movie.id !== movieId));
+    setAlert({ severity: "info", message: "已從收藏清單移除！" });
   };
 
   //關閉 Modal
@@ -127,10 +161,6 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
     setModalOpen(false);
     setSelectedMovie(null);
   };
-
-  console.log("當前顯示頁面 :", currentPage);
-  console.log("當前海報模式 :", viewMode);
-  console.log("當前收藏列表 :", favoriteList);
 
   // 初始獲取movie data
   useEffect(() => {
@@ -172,10 +202,13 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         setPaginationPage,
         handlePageChange,
         moviesPerPage,
-        paginatedMovies,
         searchKeyword,
         setSearchKeyword,
-        filteredMovies,
+        paginateMovies,
+        filterMovies,
+        removeFromFavorite,
+        alert,
+        setAlert,
       }}
     >
       {children}

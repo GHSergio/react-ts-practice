@@ -8,6 +8,8 @@ import {
   useMediaQuery,
   Menu,
   MenuItem,
+  Tooltip,
+  useTheme,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -26,7 +28,8 @@ const Navbar: React.FC = () => {
   // 用於控制菜單打開的狀態
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { setCurrentPage } = useMovie();
+  const { setCurrentPage, currentPage } = useMovie();
+  const theme = useTheme();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,22 +45,61 @@ const Navbar: React.FC = () => {
         {isMobile ? (
           <>
             {/* 漢堡菜單按鈕，在小螢幕下顯示 */}
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleMenuOpen}
+            <Tooltip
+              title={"展開選擇切換清單"}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "1.2em",
+                    backgroundColor: "rgba(0, 0, 0, 0.87)",
+                    color: "white",
+                  },
+                },
+              }}
             >
-              <MenuIcon />
-            </IconButton>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={handleMenuOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Tooltip>
             {/* 漢堡菜單內容 */}
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleMenuClose}>MovieList</MenuItem>
-              <MenuItem onClick={handleMenuClose}>Favorite</MenuItem>
+              <Tooltip
+                title={"切換至電影清單"}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "1.2em",
+                      backgroundColor: "rgba(0, 0, 0, 0.87)",
+                      color: "white",
+                    },
+                  },
+                }}
+              >
+                <MenuItem onClick={handleMenuClose}>MovieList</MenuItem>
+              </Tooltip>
+              <Tooltip
+                title={"切換至收藏清單"}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "1.2em",
+                      backgroundColor: "rgba(0, 0, 0, 0.87)",
+                      color: "white",
+                    },
+                  },
+                }}
+              >
+                <MenuItem onClick={handleMenuClose}>Favorite</MenuItem>
+              </Tooltip>
             </Menu>
             {/* 中間顯示的應用標題和圖標 */}
             <Typography
@@ -86,28 +128,107 @@ const Navbar: React.FC = () => {
             >
               <MovieIcon />
             </IconButton>
+
             {/* 默認狀態下的應用標題 */}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                color: theme.palette.custom.textColor,
+                fontWeight: "600",
+              }}
+            >
               MovieListApp
             </Typography>
+
             {/* 默認狀態下的導航按鈕 */}
-            <Button color="inherit" onClick={() => setCurrentPage("menu")}>
-              Movie List
-            </Button>
-            <Button color="inherit" onClick={() => setCurrentPage("favorite")}>
-              Favorite List
-            </Button>
+            <Tooltip
+              title={"切換至電影清單"}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "1.2em",
+                    backgroundColor: "rgba(0, 0, 0, 0.87)",
+                    color: "white",
+                  },
+                },
+              }}
+            >
+              <Button
+                color="inherit"
+                sx={{
+                  color: theme.palette.custom.textColor,
+                  fontWeight: "bold",
+                  backgroundColor:
+                    currentPage === "menu"
+                      ? theme.palette.custom.buttonActive
+                      : "none",
+                  "&:hover": {
+                    backgroundColor: theme.palette.custom.buttonHover,
+                  },
+                }}
+                onClick={() => setCurrentPage("menu")}
+              >
+                Movie
+              </Button>
+            </Tooltip>
+            <Tooltip
+              title={"切換至收藏清單"}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "1.2em",
+                    backgroundColor: "rgba(0, 0, 0, 0.87)",
+                    color: "white",
+                  },
+                },
+              }}
+            >
+              <Button
+                color="inherit"
+                sx={{
+                  color: theme.palette.custom.textColor,
+                  fontWeight: "bold",
+                  backgroundColor:
+                    currentPage === "favorite"
+                      ? theme.palette.custom.buttonActive
+                      : "none",
+                  "&:hover": {
+                    backgroundColor: theme.palette.custom.buttonHover,
+                  },
+                  marginLeft: "5px",
+                }}
+                onClick={() => setCurrentPage("favorite")}
+              >
+                Favorite
+              </Button>
+            </Tooltip>
           </>
         )}
+
         {/* 切換主題模式的按鈕 */}
-        <IconButton
-          edge="end"
-          color="inherit"
-          aria-label="theme-toggle"
-          onClick={toggleTheme}
+        <Tooltip
+          title={mode === "light" ? "切換至深色主題" : "切換至淺色主題"}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "1.2em",
+                backgroundColor: "rgba(0, 0, 0, 0.87)",
+                color: "white",
+              },
+            },
+          }}
         >
-          {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="theme-toggle"
+            onClick={toggleTheme}
+          >
+            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );

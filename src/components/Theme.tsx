@@ -6,24 +6,30 @@ import { PaletteMode } from "@mui/material";
 declare module "@mui/material/styles" {
   interface Palette {
     custom: {
+      textColor: string;
       buttonTextColor: string;
       buttonBackgroundColor: string;
       buttonHover: string;
+      buttonActive: string;
       cardBackground: string;
       inputBackground: string;
       inputTextColor: string;
       boxShadow: string;
+      deleteIcon: string;
     };
   }
   interface PaletteOptions {
     custom?: {
+      textColor?: string;
       buttonTextColor?: string;
       buttonBackgroundColor?: string;
       buttonHover?: string;
+      buttonActive?: string;
       cardBackground?: string;
       inputBackground?: string;
       inputTextColor?: string;
       boxShadow?: string;
+      deleteIcon?: string;
     };
   }
 }
@@ -49,6 +55,7 @@ const lightPalette: CustomPaletteOptions = {
     primary: "#000000",
   },
   custom: {
+    textColor: "#000000",
     buttonTextColor: "001a00",
     buttonBackgroundColor: "#c2f386",
     buttonHover: "#00cc76",
@@ -56,6 +63,8 @@ const lightPalette: CustomPaletteOptions = {
     inputTextColor: "#CCFFF2",
     cardBackground: "#00EAFF",
     boxShadow: "0 0 5px 2px rgba(0,0,0,0.3)",
+    deleteIcon: "#578b31",
+    buttonActive: "#52c492",
   },
 };
 
@@ -75,12 +84,15 @@ const darkPalette: CustomPaletteOptions = {
     primary: "#32FFFF",
   },
   custom: {
+    textColor: "#e9ffff",
     buttonTextColor: "#5f1f00",
     buttonBackgroundColor: "#db6449",
     buttonHover: "#00cc76",
     inputBackground: "#CCFFF2",
     inputTextColor: "#000000",
     cardBackground: "#009898",
+    deleteIcon: "#571d53",
+    buttonActive: "#3abe5e",
     // boxShadow: "0 0 5px 2px rgba(200,200,200,0.3)",
   },
 };
