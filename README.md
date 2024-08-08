@@ -15,6 +15,10 @@
 - **Favorite/Delete Icon**: 點擊 Favorite/Delete Icon 可以新增/移除收藏電影。
 - **Pagination**: 點擊分頁碼 可切換顯示分頁。
 
+## Links
+
+- Live Site URL: [前往佈署網址](https://test-orpin-gamma.vercel.app/)
+
 ## Author
 
 Github - [Ming Hsu](https://github.com/GHSergio)
