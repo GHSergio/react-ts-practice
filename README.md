@@ -14,3 +14,7 @@
 - **More**: 點擊 More 按鈕可以顯示更多資訊。
 - **Favorite/Delete Icon**: 點擊 Favorite/Delete Icon 可以新增/移除收藏電影。
 - **Pagination**: 點擊分頁碼 可切換顯示分頁。
+
+## Author
+
+Github - [Ming Hsu](https://github.com/GHSergio)
